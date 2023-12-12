@@ -65,6 +65,7 @@ class QueryState(State):
     method: str = "GET"
     url_query: str = URL_OPTIONS["GET"]
     query_options = list(URL_OPTIONS.keys())
+    color="white"
 
     def update_method(self, value):
         if self.url_query == "":
@@ -115,7 +116,7 @@ def data_display():
         padding_x="1rem",
         # width="25%",
         height="100%",
-        # bg="black"
+        color="white"
     )
 
 
@@ -128,6 +129,7 @@ def render_product(product: Product):
             xt.text("Category:", product.category),
             spacing="0",
             # width="7vw",
+            
         ),
         xt.vstack(
             xt.text("Seller:", product.seller),
@@ -143,9 +145,9 @@ def render_product(product: Product):
 
 def query_form():
     return xt.vstack(
-        xt.hstack(xt.heading("Simple CRUD")),
+        xt.hstack(xt.heading("Simple CRUD" ), color="white",),
         xt.hstack(
-            xt.text("Query:"),
+            xt.text("Query:", color="white",),
             xt.select(
                 ["GET", "POST", "PUT", "DELETE"],
                 on_change=QueryState.update_method,
@@ -156,6 +158,10 @@ def query_form():
                 p="0.75rem",
                 border_width="2px",
                 border_radius="0.5rem",
+                 color="white",
+              
+                
+                
             ),
             xt.input(
                 value=QueryState.url_query,
@@ -168,6 +174,7 @@ def query_form():
                 p="0.75rem",
                 border_width="2px",
                 border_radius="0.5rem",
+                color="white"
             ),
             width="100%",
         ),
@@ -176,6 +183,8 @@ def query_form():
                 xt.text(
                     "Body:",
                     text_align="start",
+                    color="white"
+                    
                 ),
                 width="100%",
             ),
@@ -190,6 +199,7 @@ def query_form():
                 px="0.75rem",
                 border_width="2px",
                 border_radius="0.5rem",
+                  color="white"
             ),
             xt.hstack(
                 xt.button(
@@ -199,6 +209,7 @@ def query_form():
                     py="0.5rem",
                     px="1.5rem",
                     border_radius="9999px",
+                     color="white"
                 ),
                 xt.button(
                     "Send",
@@ -208,6 +219,7 @@ def query_form():
                     py="0.5rem",
                     px="1.5rem",
                     border_radius="9999px",
+                     color="white"
                 ),
             ),
             width="100%",
@@ -216,7 +228,7 @@ def query_form():
         # xt.divider(orientation="horizontal", border="solid black 1px", width="100%"),
         xt.box(
             xt.hstack(
-                xt.text("Status: ", QueryState.response_code), xt.spacer(), width="100%"
+                xt.text("Status: ", QueryState.response_code,color="white"), xt.spacer(), width="100%"
             ),
             xt.container(
                 xt.markdown(
@@ -240,7 +252,7 @@ def index() -> xt.Component:
         xt.spacer(),
         xt.divider(orientation="vertical", border="solid black 1px"),
         xt.box(
-            xt.heading("Data Display", font_size="24px", pb="1rem"),
+            xt.heading("Data Display", font_size="24px", pb="1rem", color="white",),
             xt.divider(orientation="horizontal", border="solid #555555 1px"),
             data_display(),
             bg="black",
