@@ -3,6 +3,7 @@ from nextpy_chat import styles
 from nextpy_chat.components import loading_icon
 from nextpy_chat.State.interview import QA, InterviewState
 
+
 def message(qa: QA) -> xt.Component:
     return xt.box(
         xt.box(
@@ -12,18 +13,12 @@ def message(qa: QA) -> xt.Component:
                 ),
                 xt.text(
                     qa.question,
-                    color = "white",
-                    font_size = '12px',
-                    shadow=styles.shadow_light,
-                    py='4'
+                    style=styles.interview_message_question_text
                 ),
             ),
             text_align="left",
-            bg = styles.bg_dark_color,
-            p = '4',
-            my = '2 em',
-            width = "100%",
-            class_name = "rounded-lg"
+            style=styles.interview_message_question_box,
+            class_name=styles.interview_message_question_box_tailwind
         ),
         xt.box(
             xt.image(
@@ -31,15 +26,14 @@ def message(qa: QA) -> xt.Component:
             ),
             xt.text(
                 qa.answer,
-                shadow=styles.shadow_light,
-                font_size = '12px',
-                **styles.message_style,
+                # Using main page chat_question_text style here
+                style=styles.message_question_text,
+                **styles.message_style
             ),
-            class_name="flex flex-row items-center",
-            text_align="left"
+            style=styles.interview_message_answer_box,
+            class_name=styles.interview_message_answer_box_tailwind,
         ),
-        p = '1em',
-        width="100%",
+        style=styles.interview_message
     )
 
 
@@ -47,48 +41,46 @@ def chat() -> xt.Component:
     """List all the messages in a single conversation."""
     return xt.vstack(
         xt.vstack(
-        xt.card(
-            xt.hstack(
-                xt.image( src = "/logo.png", height = "30px", width = "30px", padding_right='3px' ),
-                xt.text("Add JOB DESCRIPTION or JOB KEYWORD below and press Submit to start with INTERVIEW", font_size="xs", font_weight="bold")
-            ),
-            bg = '#00ADB5',
-            color = "black",
-            width = "40%",
-        ),
-        xt.form(
-            xt.text_area(
-                value = InterviewState.job_desc,
-                is_required= True,
-                placeholder = 'Enter Job Description',
-                on_change=InterviewState.set_job_desc,
-            ),
-            xt.form_control(
-                xt.button(
-                    xt.text('SUBMIT'),
-                    bg = '#00ADB5',
-                    color = "black",
-                    class_name = 'w-max',
-                    type_ = 'submit',
-                    my = '1em'
+            xt.card(
+                xt.hstack(
+                    xt.image(
+                        src="/logo.png",
+                        style=styles.interview_chat_card_image
+                    ),
+                    xt.text(
+                        "Add job description or job keyword below and press submit to start with interview",
+                        style=styles.interview_chat_card_text,
+                        class_name="md:text-base text-xs"
+                    )
                 ),
+                style=styles.interview_chat_card
             ),
-            on_submit=InterviewState.process_interview
-        ),
-        m = '6em',
-        display = InterviewState.interview_option
+            xt.form(
+                xt.text_area(
+                    value=InterviewState.job_desc,
+                    is_required=True,
+                    placeholder='Enter Job Description',
+                    on_change=InterviewState.set_job_desc,
+                ),
+                xt.form_control(
+                    xt.button(
+                        xt.text('Submit'),
+                        type_='submit',
+                        style=styles.interview_chat_button,
+                        class_name=styles.interview_chat_button_tailwind
+                    ),
+                ),
+                on_submit=InterviewState.process_interview
+            ),
+            m='6em',
+            display=InterviewState.interview_option
         ),
         xt.box(
-            xt.foreach(InterviewState.interview_chats[InterviewState.interview_chat], message)
+            xt.foreach(
+                InterviewState.interview_chats[InterviewState.interview_chat], message)
         ),
-        m = '1em',
-        align_self="center",
-        bg=styles.border_color,
-        flex="1",
-        mx='auto',
-        overflow_y="hidden",
-        width="90%",
-        class_name="max-w-full md:max-w-[92%] h-screen scroll-smooth scrollbar-none scroll-auto"   
+        style=styles.interview_chat,
+        class_name=styles.interview_chat_tailwind
     )
 
 
@@ -103,50 +95,37 @@ def action_bar() -> xt.Component:
                             placeholder="Type something...",
                             value=InterviewState.interview_answer,
                             on_change=InterviewState.set_interview_answer,
-                            _placeholder={"color": "#fffa"},
-                            border_width="0px"
+                            style=styles.action_bar_input
                         ),
                         xt.button(
                             xt.cond(
                                 InterviewState.recording,
-                                xt.image(src="/listen.png", width="2em", height="auto"),
-                                xt.image(src="/mike.png", width="2em", height="auto"),
+                                xt.image(src="/listen.png",
+                                         width="2em", height="auto"),
+                                xt.image(src="/mike.png",
+                                         width="2em", height="auto"),
                             ),
                             on_click=InterviewState.start_recording,
-                            bg=styles.accent_dark,
-                            border_width="0px",
-                        ),                
+                            style=styles.interview_recording_button
+                        ),
                         xt.button(
                             xt.cond(
                                 InterviewState.interview_processing,
                                 loading_icon(height="1em"),
-                                xt.image(src="/send.svg", width="1.5em", height="auto"),
+                                xt.image(src="/send.svg",
+                                         width="1.5em", height="auto"),
                             ),
                             type_="submit",
-                            bg=styles.accent_dark,
-                            border_width="0px",
-                            rounded = "3xl"
+                            style=styles.action_bar_button
                         )
                     ),
                     is_disabled=InterviewState.interview_processing,
-                    style=styles.action_bar_style,
-                    mx='auto'
+                    style=styles.action_bar_style
                 ),
                 on_submit=InterviewState.process_interview,
             ),
-            max_w="6xl",
-            width="90%",
-            mx="auto", 
+            style=styles.action_bar_vstack
         ),
-        bg=styles.border_color,
-        position="sticky",
-        bottom="0",
-        left="0",
-        py="6",
-        backdrop_filter="auto",
-        backdrop_blur="lg",
-        border_top=f"1px solid {styles.border_color}",
-        align_items = "center",
-        width = "100%",
-        display = InterviewState.interview_convo
+        style=styles.action_bar_box,
+        display=InterviewState.interview_convo
     )
