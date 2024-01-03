@@ -4,4 +4,6 @@
 
 *.web
 
+*.web
+
 __pycache__/
