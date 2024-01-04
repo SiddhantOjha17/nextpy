@@ -1,6 +1,3 @@
-# This file has been modified by the Nextpy Team in 2023 using AI tools and automation scripts. 
-# We have rigorously tested these modifications to ensure reliability and performance. Based on successful test results, we are confident in the quality and stability of these changes.
-
 import nextpy as xt
 
 from nextpy_chat import styles
@@ -14,43 +11,42 @@ def navbar():
             xt.hstack(
                 xt.icon(
                     tag="hamburger",
-                    mr=4,
                     # on_click=InterviewState.toggle_drawer,
                     cursor="pointer",
-                    w="1.2em",
-                    h="1.2em",
+                    style=styles.navbar_hamburger
                 ),
                 xt.link(
                     xt.box(
-                        xt.image(src="/favicon.ico", width="1.2em", height="auto"),
-                        p="1",
-                        border_radius="6",
-                        bg="#F0F0F0",
-                        mr="2",
+                        xt.image(src="/favicon.ico",
+                                 width="1.2em", height="auto"),
+                        style=styles.navbar_favicon
                     ),
                     href="/",
                 ),
                 xt.breadcrumb(
                     xt.breadcrumb_item(
-                        xt.text(InterviewState.interview_chat, size="sm", font_weight="normal"),
+                        xt.text(
+                            InterviewState.interview_chat,
+                            style=styles.navbar_current_chat
+                        ),
                     ),
                 ),
             ),
             xt.hstack(
                 xt.hstack(
-                        xt.image(src="/Frame.svg", width="1em", height="auto",class_name='min-w-[1em]',),
-                        xt.input(
-                                    placeholder="Prepare for your Interviews ...",
-                                    display=["none", "none", "none", "flex", "flex"],
-                                    _placeholder={"color": "#6C7275", "font_size":"13px"},
-                                    variant="unstyled",
-                                    padding_right="8",
-                                    padding_bottom="1"
-                                ),
-                    bg=styles.border_color,
-                    rounded="xl",
-                    padding_x="4",
-                    padding_y="1",    
+                    xt.image(
+                        src="/Frame.svg",
+                        style=styles.navbar_frame,
+                        class_name=styles.navbar_frame_tailwind
+                    ),
+                    xt.input(
+                        placeholder="Prepare for your Interviews ...",
+                        display=["none", "none", "none", "flex", "flex"],
+                        _placeholder={"color": "#6C7275", "font_size": "13px"},
+                        style=styles.navbar_input,
+                        variant="unstyled",
+                    ),
+                    style=styles.navbar_hstack_1
                 ),
                 features.features(),
                 xt.menu(
@@ -64,15 +60,9 @@ def navbar():
                         xt.menu_item("Settings"),
                     ),
                 ),
-                spacing="6",
+                style=styles.navbar_hstack_2
             ),
-            justify="space-between",
+            style=styles.navbar_hstack
         ),
-        bg=styles.bg_dark_color,
-        backdrop_filter="auto",
-        backdrop_blur="lg",
-        p="2",
-        position="sticky",
-        top="0",
-        z_index="100",
+        style=styles.navbar
     )

@@ -1,6 +1,3 @@
-# This file has been modified by the Nextpy Team in 2023 using AI tools and automation scripts. 
-# We have rigorously tested these modifications to ensure reliability and performance. Based on successful test results, we are confident in the quality and stability of these changes.
-
 import nextpy as xt
 from nextpy_chat import styles
 from nextpy_chat.components import loading_icon
@@ -16,20 +13,20 @@ def message(qa: QA) -> xt.Component:
     Returns:
         A component displaying the question/answer pair.
     """
-
     return xt.box(
         xt.box(
             xt.image(
-                src='/avatar.png', width='25px', height='25px'
+                src='/avatar.png', width='25px', height='25px', class_name="bg-[#7e57c2] rounded-full ml-2"
             ),
             xt.text(
                 qa.question,
-                shadow=styles.shadow_light,
-                font_size = '12px',
-                **styles.message_style,
+                style=styles.message_question_text,
+                font_size='15.25px',
+                color="#E3E3E3",
+                **styles.message_style
             ),
-            class_name="flex flex-row items-center",
-            text_align="left"
+            style=styles.message_question_box,
+            class_name=styles.message_question_box_tailwind
         ),
         xt.box(
             xt.hstack(
@@ -39,34 +36,65 @@ def message(qa: QA) -> xt.Component:
                 xt.vstack(
                     xt.markdown(
                         qa.answer,
-                        color = "white",
-                        font_size = '12px',
-                        shadow=styles.shadow_light
+                        style=styles.message_answer_markdown
                     ),
-                    class_name = 'p-6 text-xs'
+                    class_name=styles.message_answer_vstack_tailwind
                 ),
             ),
             xt.hstack(
                 xt.button(
-                    xt.image( src='/like.png'),
+                    xt.image(src='/thumbs-up.png'),
                     on_click=MainState.toggle_like(qa.index),
-                    style = styles.react_button,
-                    bg = qa.like_bg               
+                    style=styles.reaction_button,
+                    padding='0.5',
+                    class_name="border border-[#393E44] w-6",
+                    bg='#111111',
+                    _hover={
+                        "bg": '#111111',
+                    },
                 ),
                 xt.button(
-                    xt.image( src='/dislike.png'),
+                    xt.image(src='/thumbs-down.png'),
                     on_click=MainState.toggle_dislike(qa.index),
-                    style = styles.react_button,
-                    padding = '0.5',
-                    bg = qa.dislike_bg
+                    style=styles.reaction_button,
+                    padding='0.5',
+                    class_name="border border-[#393E44] w-6",
+                    bg='#111111',
+                    _hover={
+                        "bg": '#111111',
+                    },
+
+                ),
+                xt.button(
+                    xt.image(src='/share-06.png'),
+                    on_click=MainState.toggle_dislike(qa.index),
+                    style=styles.reaction_button,
+                    padding='0.5',
+                    class_name="border border-[#393E44] w-6",
+                    bg='#111111',
+                    _hover={
+                        "bg": '#111111',
+                    },
+
+                ),
+                xt.button(
+                    xt.image(src='/mirror.png'),
+                    on_click=MainState.toggle_dislike(qa.index),
+                    style=styles.reaction_button,
+                    padding='0.5',
+                    class_name="border border-[#393E44] w-6",
+                    bg='#111111',
+                    _hover={
+                        "bg": '#111111',
+                    },
                 ),
                 px='9'
             ),
             text_align="left",
-            bg = styles.bg_dark_color,
-            p = '4',
-            width = "100%",
-            class_name = "rounded-lg"
+            bg=styles.bg_dark_color,
+            p='4',
+            width="100%",
+            class_name="rounded-lg"
         ),
         width="100%",
     )
@@ -77,25 +105,26 @@ def chat() -> xt.Component:
     return xt.vstack(
         xt.card(
             xt.hstack(
-                xt.image( src = "/logo.png", height = "30px", width = "30px", padding_right='4px' ),
-               xt.text("Hello! Welcome to NextpyGPT", font_size="sm", font_weight="bold")
+                xt.image(
+                    src="/logo.png",
+                    style=styles.chat_card_image
+                ),
+                xt.text(
+                    "Hello! Welcome to NextpyGPT",
+                    style=styles.chat_card_text
+                )
             ),
-            bg = '#00ADB5',
-            color = "black",
-            m = '1em',
-            width = "30%",
-            display = MainState.display_val,
+            style=styles.chat_card,
+            display=MainState.display_val
         ),
         xt.box(
-            xt.foreach(MainState.chats[MainState.current_chat], message),
+            xt.foreach(
+                MainState.chats[MainState.current_chat],
+                message
+            ),
         ),
-        align_self="center",
-        bg=styles.border_color,
-        flex="1",
-        mx='auto',
-        overflow_y="hidden",
-        width="90%",
-        class_name="max-w-full md:max-w-[92%] h-screen scroll-smooth scrollbar-none scroll-auto"   
+        style=styles.chat_vstack,
+        class_name=styles.chat_vstack_tailwind
     )
 
 
@@ -110,39 +139,28 @@ def action_bar() -> xt.Component:
                             placeholder="Type something...",
                             value=MainState.question,
                             on_change=MainState.set_question,
-                            _placeholder={"color": "#fffa"},
-                            border_width="0px"
+                            variant="unstyled",
+
+                            style=styles.action_bar_input
                         ),
                         xt.button(
                             xt.cond(
                                 MainState.processing,
                                 loading_icon(height="1em"),
-                                xt.image(src="send.svg", width="1.5em", height="auto"),
+                                xt.image(
+                                    src="send.svg", width="1.5em", height="auto"
+                                ),
                             ),
                             type_="submit",
-                            bg=styles.accent_dark,
-                            border_width="0px",
-                            rounded = "3xl"
+                            style=styles.action_bar_button
                         )
                     ),
                     is_disabled=MainState.processing,
-                    style=styles.action_bar_style,
-                    mx='auto'
+                    style=styles.action_bar_style
                 ),
                 on_submit=MainState.process_question,
             ),
-            max_w="6xl",
-            width="90%",
-            mx="auto", 
+            style=styles.action_bar_vstack
         ),
-        bg=styles.border_color,
-        position="sticky",
-        bottom="0",
-        left="0",
-        py="6",
-        backdrop_filter="auto",
-        backdrop_blur="lg",
-        border_top=f"1px solid {styles.border_color}",
-        align_items = "center",
-        width = "100%"
+        style=styles.action_bar_box
     )
